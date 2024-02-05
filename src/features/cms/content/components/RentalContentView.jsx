@@ -4,6 +4,7 @@ import SSwrapper from "src/common/components/wrapper/SSwrapper.jsx";
 import SSbutton from "src/common/components/button/SSbutton.jsx";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {cmsAction} from "src/features/cms/cmsReducer.jsx";
+import SScomment from "../../../../common/components/comment/SScomment.jsx";
 
 const RentalContentView = () => {
 
@@ -171,64 +172,77 @@ const RentalContentView = () => {
                 <div
                     style={{
                         width: '38%',
-                        height: '500px',
-                        display: "flex",
-                        flexDirection: 'column'
                     }}
                 >
+                    <div class="mt-[40px]">
+
+                        <SSwrapper
+                            style={{
+                                width: '100%',
+                                boxSizing: 'border-box',
+                                padding: '20px'
+
+                            }}
+
+                        >
+                            현재 상태: {rentalStatNm}
+
+                            <SSbutton
+                                style={{marginTop: '20px'}}
+                                disabled={true}
+                            > 대여하기(배치로 인하여 2차 예정) </SSbutton>
 
 
-                    <SSwrapper
-                        style={{
-                            width: '100%',
-                            boxSizing: 'border-box',
-                            padding: '20px'
-
-                        }}
-
-                    >
-                        현재 상태: {rentalStatNm}
-
-                        <SSbutton
-                            style={{marginTop: '20px'}}
-                            disabled={true}
-                        > 대여하기(배치로 인하여 2차 예정) </SSbutton>
+                            <SSbutton disabled={true} style={{marginTop: '10px'}}> 예약하기 (2차 개발 예정)</SSbutton>
 
 
-                        <SSbutton disabled={true} style={{marginTop: '10px'}}> 예약하기 (2차 개발 예정)</SSbutton>
+                            {
+                                // 좋아요 버튼
+                                detail?.contentDtl?.likeYn === 'Y'
+                                    ? <SSbutton
+                                        style={{marginTop: '10px'}}
+                                        danger
+                                        onClick={() => {
+                                            dispatch(cmsAction.dislikeContent({contentId: contentId}))
+                                        }}
 
+                                    > ❤️ 진짜로 이렇게 멋진걸 취소 한다구요? </SSbutton>
+                                    : <SSbutton
+                                        onClick={() => {
+                                            dispatch(cmsAction.likeContent({contentId: contentId}))
+                                        }}
+                                        style={{marginTop: '10px'}}
+                                    >
+                                        ♡ 좋아요
+                                    </SSbutton>
+                            }
 
-                        {
-                            // 좋아요 버튼
-                            detail?.contentDtl?.likeYn === 'Y'
-                                ? <SSbutton
-                                    style={{marginTop: '10px'}}
-                                    danger
-                                    onClick={() => {
-                                        dispatch(cmsAction.dislikeContent({contentId: contentId}))
-                                    }}
+                        </SSwrapper>
 
-                                > ❤️ 진짜로 이렇게 멋진걸 취소 한다구요? </SSbutton>
-                                : <SSbutton
-                                    onClick={() => {
-                                        dispatch(cmsAction.likeContent({contentId: contentId}))
-                                    }}
-                                    style={{marginTop: '10px'}}
-                                >
-                                    ♡ 좋아요
-                                </SSbutton>
-                        }
-
-
-                    </SSwrapper>
-
+                        <SSwrapper
+                            style={{
+                                width: '100%',
+                                boxSizing: 'border-box',
+                                padding: '20px'
+                            }}
+                        >
+                            (개발중)댓글창
+                            <SScomment // TODO 댓글기록 넘기기
+                                contentId={contentId}
+                                initialComments={[{
+                                    author: '나루토',
+                                    avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+                                    content: <p>하이루 방가</p>,
+                                    datetime: '2024-01-23 10:23:34',
+                                }]}></SScomment>
+                        </SSwrapper>
+                    </div>
 
 
                     {/*수정 권한 있는지에 따라 보여줌*/}
                     {!readOnly &&
                         <div
-                            style={{
-                        }}
+                            style={{}}
                         >
                             디자인 변경 예정
 
