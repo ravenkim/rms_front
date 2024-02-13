@@ -4,7 +4,7 @@ import SSwrapper from "src/common/components/wrapper/SSwrapper.jsx";
 import SSbutton from "src/common/components/button/SSbutton.jsx";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {cmsAction} from "src/features/cms/cmsReducer.jsx";
-import SScomment from "../../../../common/components/comment/SScomment.jsx";
+import CommentContainer from "src/common/components/comment/CommentContainer.jsx";
 
 const RentalContentView = () => {
 
@@ -85,6 +85,65 @@ const RentalContentView = () => {
 
     //자유공간
     const [freeFieldsData, setFreeFieldsData] = useState()
+
+    const initComments = [{
+        commentId: '1',
+        parentCommentId: '',
+        author: '나루토',
+        userId: '1',
+        avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+        content: <p>테스트 텍스트1</p>,
+        regDt: '2024-01-23 10:23:34',
+    }, {
+        commentId: '2',
+        parentCommentId: '1',
+        author: '나루토',
+        userId: '1',
+        avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+        content: <p>테스트 텍스트2</p>,
+        regDt: '2024-01-23 10:23:34',
+    }, {
+        commentId: '3',
+        parentCommentId: '1',
+        author: '나루토',
+        userId: '1',
+        avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+        content: <p>테스트 텍스트3</p>,
+        regDt: '2024-01-23 10:23:34',
+    },{
+        commentId: '4',
+        parentCommentId: '',
+        author: '나루토',
+        userId: '1',
+        avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+        content: <p>테스트 텍스트4</p>,
+        regDt: '2024-01-23 10:23:34',
+    }, {
+        commentId: '5',
+        parentCommentId: '',
+        author: '나루토',
+        avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+        content: <p>테스트 텍스트5</p>,
+        regDt: '2024-01-23 10:23:34',
+    }, {
+        commentId: '6',
+        parentCommentId: '5',
+        author: '나루토',
+        userId: '1',
+        avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
+        content: <p>테스트 텍스트6</p>,
+        regDt: '2024-01-23 10:23:34',
+    }].map(item => ({...item, children: []}))
+
+    const [initialComments, setInitialComments] = useState(initComments || [])
+
+    const comments = initialComments.filter(item => !item.parentCommentId).map(parent => ({
+        ...parent,
+        children: initialComments.filter(child => child.parentCommentId === parent.commentId)
+    }));
+
+    console.log('comments', comments)
+
 
 
     return (
@@ -227,14 +286,11 @@ const RentalContentView = () => {
                             }}
                         >
                             (개발중)댓글창
-                            <SScomment // TODO 댓글기록 넘기기
+                            <CommentContainer // TODO 댓글기록 넘기기
                                 contentId={contentId}
-                                initialComments={[{
-                                    author: '나루토',
-                                    avatar: "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&h=100&q=80",
-                                    content: <p>하이루 방가</p>,
-                                    datetime: '2024-01-23 10:23:34',
-                                }]}></SScomment>
+                                comments={comments}
+                                setInitialComments={setInitialComments}>
+                            </CommentContainer>
                         </SSwrapper>
                     </div>
 
