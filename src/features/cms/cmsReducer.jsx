@@ -68,10 +68,17 @@ const asyncRequest = {
 }
 
 
-const localState = {}
+const localState = {
+    tab: ""
+}
 
 //로컬 리듀서
-const localReducers = {}
+const localReducers = {
+    setTab: (state, action) => {
+        state.tab = action.payload
+        return state
+    },
+}
 
 //이름만 바꿔서 사용
 export const {cmsSlice, cmsSaga, cmsAction} = reduxMaker(prefix, asyncRequest, localState, localReducers);
